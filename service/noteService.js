@@ -24,22 +24,18 @@ class NoteService {
    
     async getAllNotes(req) {
         const userId = req.user.id;
-        console.log(userId)
         let { trashed, archive, label } = req.params;
 
         const trashedBool = trashed === 'true';
         const archiveBool = archive === 'true';
-
-        const query = {
-            user: userId,
-            trashed: trashedBool,
-            archived: archiveBool,
-        };
-
-        if (label && label !== 'undefined') {
+        let query = {user: userId}
+        if(label && label !== undefined && label !== ''){        
             query.labels = { $in: [label.trim()] };
         }
-
+        else {
+            query.trashed = trashedBool
+            query.archived =  archiveBool
+        }          
         const notes = await Note.find(query).sort({ createdAt: -1 });
         return { data: notes, status: 200, message: "Note retrived successfully." }
     }
