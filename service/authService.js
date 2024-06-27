@@ -5,14 +5,13 @@ import jwt from 'jsonwebtoken';
 class AuthService {
 
     async login(req) {
-        console.log('in log in')
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user) return { data: null, message: "User not found.", status:404 }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return { data: null, message: "Invalid credentials.", status:401 }
-        const payload = { user: { id: user.id } };
+        const payload = { user: { id: user._id } };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: `${60 * 60 * 24}s` });
         // send token
         return { data: {token}, message: "User loged in successfully.", status:200 }
