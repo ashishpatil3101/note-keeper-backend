@@ -42,7 +42,7 @@ class NoteService {
         if(trashed === 'true')data = await Note.find({$and:[{user: userId},{trashedAt : { $ne: null }}]});
         else if(archive  === 'true') data = await Note.find( { $and: [{user: userId},{archived : true}] }); 
         else if(label && label !== undefined && label !== '')   data = await Note.find({$and: [{user: userId},{labels : { $in: [label.trim()] }}]});       
-        else data = await Note.find({ $and: [{user: userId},{archived : false, trashedAt : { $ne: null }}]}); 
+        else data = await Note.find({ $and: [{user: userId},{archived : false, trashedAt : { $eq: null }}]}); 
         // const notes = await Note.find(query).sort({ createdAt: -1 });
         return { data: data, status: 200, message: "Note retrived successfully." }
     }
