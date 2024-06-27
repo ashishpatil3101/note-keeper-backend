@@ -30,15 +30,21 @@ class NoteService {
         const trashedBool = trashed === 'true';
         const archiveBool = archive === 'true';
         let query = {user: userId}
-        if(label && label !== undefined && label !== ''){        
-            query.labels = { $in: [label.trim()] };
-        }        
-        query.archived =  archiveBool     
-        if(trashed === 'true')query.trashedAt = { $ne: null }          
-        else query.trashedAt = { $eq: null }   
-        console.log(query,trashed  === true, archive)       
-        const notes = await Note.find(query).sort({ createdAt: -1 });
-        return { data: notes, status: 200, message: "Note retrived successfully." }
+        // if(label && label !== undefined && label !== ''){        
+        //     query.labels = { $in: [label.trim()] };
+        // }
+        // else {
+        //     query.archived =  archiveBool     
+        //     if(trashed === 'true')query.trashedAt = { $ne: null }          
+        //     else query.trashedAt = { $eq: null }  
+        // }   
+        let data ;
+        if(trashed === 'true')data = await Note.find({$and:[{user: userId},{trashedAt : { $ne: null }}]});
+        else if(archive  === 'true') data = await Note.find( { $and: [{user: userId},{archived : true}] }); 
+        else if(label && label !== undefined && label !== '')   data = await Note.find({$and: [{user: userId},{labels : { $in: [label.trim()] }}]});       
+        else data = await Note.find({ $and: [{user: userId},{archived : false, trashedAt : { $ne: null }}]}); 
+        // const notes = await Note.find(query).sort({ createdAt: -1 });
+        return { data: data, status: 200, message: "Note retrived successfully." }
     }
 
 
