@@ -10,39 +10,20 @@ import {
   getAllNotes, 
   toggleArchive, 
   deleteNote,
-  allNotesByQuery
+  allNotesByQuery,
+  toggleTrash
    }  
-   from '../controller/noteController.js'
+   from '../controller/noteController.js';
+
 const router = express.Router();
 
 router.use(verifyToken);
 
-router.put('/trash/:id', async (req, res) => {
-  try {
-    let note = await Note.findById(req.params.id);
-    if (!note) return res.status(404).json({ message: 'Note not found' });
-
-    if (note.trashed) {
-      await note.deleteOne();
-      return res.json({ message: 'Note deleted successfully!' });
-    }
-
-    note.trashed = true;
-    await note.save();
-
-    res.json(note);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-
 router.post('/', saveNote);
 router.get('/:trashed/:archive/:label?', getAllNotes)
 router.put('/archive/:id', toggleArchive);
+router.post('/toggle-trash/:id', toggleTrash);
 router.delete('/delete/:id', deleteNote)
-// router.put('/trash/:id', "")
 router.get('/search', allNotesByQuery)
 router.get('/labels', getAllLabels);
 router.put('/color/:id', toggleColor);

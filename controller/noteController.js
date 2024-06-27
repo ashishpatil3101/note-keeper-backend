@@ -33,10 +33,8 @@ const saveNote = async(req, res, next)=>{
  */
 
 const getAllNotes = async(req, res, next)=>{
-    console.log("dankey")
     try {
         const data = await noteService.getAllNotes(req);
-        console.log(data)
         if(data.data !== null) return res.status(200).json(sendResponse(data.message, data.data));
         else next(createError(data.status, data.message));
     } catch (error) {
@@ -165,7 +163,26 @@ const dueDateReminderNotes = async(req, res, next)=>{
 }
 
 
+/**
+ * toggleTrash : toggle note to trash
+ * @param {note id} req
+ * @param {notes} res
+ */
+const toggleTrash = async(req, res, next)=>{
+    try {
+        const data =  await noteService.toggleTrash(req);
+        if(data.data !== null) res.status(200).json(sendResponse(data.message, data.data));
+        else next(createError(data.status, data.message));
+    } 
+    catch (error) {
+        console.log("error in delete label.");
+         next(createError(500, error.message))
+    }
+}
+
+
 export {
+    toggleTrash,
     dueDateReminderNotes,
     deleteLabel,
     toggleColor,

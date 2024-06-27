@@ -4,6 +4,7 @@ import User from '../models/user.js';
 class NoteService {
 
     async saveNote(req) {
+        console.log("in saved note")
         const { title, text, color, tags, labels, reminderDate } = req.body;
         const userId = req.user.id;
         const user = await User.findById(userId);
@@ -18,6 +19,7 @@ class NoteService {
             user: userId 
         });
         const note = await newNote.save();
+        console.log("insaved note", note)
         return { data: newNote, status: 201, message: "Note saved successfully." };
     }
 
@@ -25,17 +27,16 @@ class NoteService {
     async getAllNotes(req) {
         const userId = req.user.id;
         let { trashed, archive, label } = req.params;
-
         const trashedBool = trashed === 'true';
         const archiveBool = archive === 'true';
         let query = {user: userId}
         if(label && label !== undefined && label !== ''){        
             query.labels = { $in: [label.trim()] };
-        }
-        else {
-            query.trashed = trashedBool
-            query.archived =  archiveBool
-        }          
+        }        
+        query.archived =  archiveBool     
+        if(trashed === 'true')query.trashedAt = { $ne: null }          
+        else query.trashedAt = { $eq: null }   
+        console.log(query,trashed  === true, archive)       
         const notes = await Note.find(query).sort({ createdAt: -1 });
         return { data: notes, status: 200, message: "Note retrived successfully." }
     }
@@ -111,6 +112,17 @@ class NoteService {
             reminder: { $gte: today } 
         }).sort({ reminder: 1 });
         return {data: upcomingNotes,  message: "Notes retrieved successfully.", status: 200}
+    }
+
+    async toggleTrash(req){
+        let note = await Note.findById(req.params.id);
+        if (!note) return { date: null, status: 404, message: 'Note not found' };
+        if(note.trashedAt &&  note.trashedAt !== null)note.trashedAt = null;
+        else note.trashedAt = new Date();
+        const updatedNote = await Note.findByIdAndUpdate(req.params.id, {trashedAt : note.trashedAt});
+        // console.log(updatedNote,note)
+        let msg = note.trashed === null ? 'Note trashed successfully.' : "Note recovered successfullly.";
+        return { date: updatedNote, status: 200, message: msg };
     }
 }
 
