@@ -45,6 +45,11 @@ Follow these instructions to set up and run the API on your local machine.
 
    The server will start on `http://localhost:5000`. 
 
+
+## Scheduled Tasks
+
+### Automatic Deletion of Old Trashed Notes
+
 ## API Endpoints
 
 ### Authentication Routes
