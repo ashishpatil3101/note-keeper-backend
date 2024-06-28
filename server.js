@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import notesRoutes from './routes/notes.js';
+import scheduleTrashedNotesDeletion from './utils/scheduledTasks.js'; 
 
 dotenv.config();
 const app = express();
@@ -37,4 +38,5 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
   // Start server
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  scheduleTrashedNotesDeletion(); // Schedule the deletion task
 }).catch(err => console.error(err.message));
