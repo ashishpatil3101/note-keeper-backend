@@ -4,7 +4,6 @@ import authService  from '../service/authService.js';
 import validator from 'validator';
 
 const login = async(req, res, next)=>{
-    console.log("in log int")
     try {
         const data = await authService.login(req, res);
         if (data.data) {
@@ -32,11 +31,9 @@ const register = async (req, res, next) => {
         if (email !== undefined && email !== '' && validator.isEmail(email) && password !== undefined && password !== '' ) {
             const data = await authService.register(req);
             if (data.data && data.data !== null) {
-                console.log("success")
                 res.status(201).send(sendResponse(data.message, data.data));
             }
             else {
-                console.log(data)
                 next(createError(data.status, data.message));
             }
         }

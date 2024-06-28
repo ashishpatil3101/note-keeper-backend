@@ -4,7 +4,6 @@ import User from '../models/user.js';
 class NoteService {
 
     async saveNote(req) {
-        console.log("in saved note")
         const { title, text, color, tags, labels, reminderDate } = req.body;
         const userId = req.user.id;
         const user = await User.findById(userId);

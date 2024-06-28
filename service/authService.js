@@ -18,18 +18,13 @@ class AuthService {
     }
 
    async register(req){
-    console.log(req.body)
     const {email, password} = req.body;
     let user = await User.findOne({ email });
-    console.log("in regiser", user)
     if (user !== null) return {data: null, status: 400, message: "User already exists."}
     const hashedPassword = await bcrypt.hash(password, 10);
     user = new User({ email, password: hashedPassword });
     await user.save();
-
-    const payload = { user: { id: user._id } };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-    return {data: {token}, status: 201, message: "User registered successfully."}
+    return {data: {email}, status: 201, message: "User registered successfully."}
    }
 
    async logout(req) {

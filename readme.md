@@ -24,7 +24,7 @@
      - [Delete Label](#delete-label)
      - [Get Due Date Reminder Notes](#get-due-date-reminder-notes)
 
-     
+
 ## Overview
 
 This API provides endpoints for managing notes within a note-taking application. It allows users to create, retrieve, update, and delete notes, manage note attributes such as color and labels, and perform actions like archiving, trashing, and setting reminders.
@@ -107,6 +107,8 @@ Follow these instructions to set up and run the API on your local machine.
 
 
 ### Notes Routes
+
+### all Note Apis require Bearer token in header
 
 #### Submit a Note
 
