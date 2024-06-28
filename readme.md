@@ -1,5 +1,30 @@
 # Note-Taking Application API
 
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+3. [Scheduled Tasks](#scheduled-tasks)
+   - [Automatic Deletion of Old Trashed Notes](#automatic-deletion-of-old-trashed-notes)
+4. [API Endpoints](#api-endpoints)
+   - [Authentication Routes](#authentication-routes)
+     - [Register User](#register-user)
+     - [Login User](#login-user)
+   - [Notes Routes](#notes-routes)
+     - [Submit a Note](#submit-a-note)
+     - [Get All Notes](#get-all-notes)
+     - [Toggle Archive Status](#toggle-archive-status)
+     - [Toggle Trash Status](#toggle-trash-status)
+     - [Delete a Note](#delete-a-note)
+     - [Search Notes](#search-notes)
+     - [Get All Labels](#get-all-labels)
+     - [Toggle Color](#toggle-color)
+     - [Delete Label](#delete-label)
+     - [Get Due Date Reminder Notes](#get-due-date-reminder-notes)
+
+     
 ## Overview
 
 This API provides endpoints for managing notes within a note-taking application. It allows users to create, retrieve, update, and delete notes, manage note attributes such as color and labels, and perform actions like archiving, trashing, and setting reminders.
